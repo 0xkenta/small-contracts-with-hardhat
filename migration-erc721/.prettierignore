@@ -1,0 +1,7 @@
+artifacts/
+cache/
+package.json
+types/
+.github/
+.solhint.json
+.vscode/
