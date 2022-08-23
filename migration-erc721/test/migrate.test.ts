@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import chai, { expect } from "chai";
 import { constants } from "ethers";
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { Migration, TestNewNft, TestOldNft } from "../types";
 import { solidity } from "ethereum-waffle";
 
