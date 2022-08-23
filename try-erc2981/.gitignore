@@ -1,0 +1,19 @@
+# Node
+node_modules/
+
+# Hardhat
+cache/
+artifacts/
+
+# Typechain
+types/
+
+# Env
+.env
+
+# Coverage
+coverage/
+coverage.json
+
+scripts/
+yarn.lock
