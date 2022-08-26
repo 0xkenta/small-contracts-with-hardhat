@@ -22,7 +22,7 @@ describe("TestERC721a", () => {
 
   before(async () => {
     [owner, user1, user2, user3, other] = await ethers.getSigners()
-    erc721a = await (await ethers.getContractFactory("TestERC721a")).deploy() as TestERC721a
+    erc721a = await (await ethers.getContractFactory("TestERC721a")).deploy(100) as TestERC721a
     await erc721a.deployed()
   })
 
@@ -48,6 +48,7 @@ describe("TestERC721a", () => {
     it("should be initialized", async () => {
       expect(await erc721a.name()).to.equal("test")
       expect(await erc721a.symbol()).to.equal("TEST")
+      expect(await erc721a.maxSupplyPerDay()).to.equal(100)
     })
   })
   describe("mint()", () => {
@@ -158,6 +159,13 @@ describe("TestERC721a", () => {
         expect(result[0]).to.equal(other.address)
         expect(result[1]).to.equal(price * 0.5)
       })
+    })
+  })
+
+  describe("tokenURI", () => {
+    it("should return the token URI", async () => {
+      await erc721a.mint(user1.address, 1)
+      expect(await erc721a.tokenURI(0)).to.equal("ipfs://KIICHI")
     })
   })
 });
