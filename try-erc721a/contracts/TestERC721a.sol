@@ -8,10 +8,14 @@ import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 
 contract TestERC721a is ERC721AQueryable, ERC2981, AccessControlEnumerable {
-    bytes32 public constant PERMITTED_ROLE = keccak256("PERMITTED_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
-    constructor() ERC721A("test", "TEST") {
+
+    uint256 public maxSupplyPerDay;
+
+    constructor(uint256 _maxSupplyPerDay) ERC721A("test", "TEST") {
+        maxSupplyPerDay = _maxSupplyPerDay;
+
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MINTER_ROLE, _msgSender());
         _setupRole(BURNER_ROLE, _msgSender());
@@ -32,6 +36,12 @@ contract TestERC721a is ERC721AQueryable, ERC2981, AccessControlEnumerable {
 
     function setRoyalty(address _receiver, uint96 _feeNumerator) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _setDefaultRoyalty(_receiver, _feeNumerator);
+    }
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        return "ipfs://KIICHI";
     }
 
     function supportsInterface(
