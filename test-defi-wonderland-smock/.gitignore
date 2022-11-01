@@ -1,0 +1,17 @@
+# Node
+node_modules/
+
+# Hardhat
+cache/
+artifacts/
+
+# Typechain
+types/
+typechain-types/
+
+# Env
+.env
+
+# Coverage
+coverage/
+coverage.json
