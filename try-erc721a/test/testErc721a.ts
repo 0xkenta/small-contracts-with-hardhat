@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { expect } from "chai";
 import { TestERC721a } from "../types";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signers";
-import { BigNumber } from "ethers";
+import { BigNumber, constants } from "ethers";
 import chai from "chai";
 import { solidity } from "ethereum-waffle";
 
@@ -112,7 +112,7 @@ describe("TestERC721a", () => {
     })
   })
 
-  describe("tokensOfOwner", () => {
+  describe("tokensOfOwner and tokensOfOwnerIn", () => {
     describe("success", () => {
       it("should return the array of ids that a user has", async () => {
         const firstMintForUser1 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -140,6 +140,23 @@ describe("TestERC721a", () => {
         expect(user3Ids).to.include.members(firstMintForUser3)
         expect(user1Ids).to.include.members(secondMintForUser1)
         expect(user2Ids).to.include.members(secondMintForUser2)
+
+        const ids1 = await erc721a.tokensOfOwnerIn(user1.address, 0, constants.MaxUint256)
+        const ids2 = await erc721a.tokensOfOwnerIn(user2.address, 0, constants.MaxUint256)
+        const ids3 = await erc721a.tokensOfOwnerIn(user3.address, 0, constants.MaxUint256)
+        
+        const expectedIdsForUser1 = firstMintForUser1.concat(secondMintForUser1)
+        const expectedIdsForUser2 = firstMintForUser2.concat(secondMintForUser2)
+
+        for (let i = 0; i < ids1.length; i++) {
+            expect(ids1[i].toNumber()).to.equal(expectedIdsForUser1[i])
+        }
+        for (let i = 0; i < ids2.length; i++) {
+            expect(ids2[i].toNumber()).to.equal(expectedIdsForUser2[i])
+        }
+        for (let i = 0; i < ids3.length; i++) {
+            expect(ids3[i].toNumber()).to.equal(firstMintForUser3[i])
+        }
       })
     })
   })
