@@ -5,10 +5,11 @@ import '@openzeppelin/contracts/utils/Strings.sol';
 
 contract TrySVGGenerator {
     using Strings for uint8;
+    using Strings for uint256;
     using Strings for address;
 
-    function constructTokenURI() public view returns (string memory) {
-        string memory image = generateSVGImage();
+    function constructTokenURI(uint256 _tokenId) public view returns (string memory) {
+        string memory image = generateSVGImage(_tokenId);
         return string(
             abi.encodePacked(
                 'data:application/json;base64,',
@@ -21,7 +22,7 @@ contract TrySVGGenerator {
         );
     }
 
-    function generateSVGImage() public view returns (string memory) {
+    function generateSVGImage(uint256 _tokenId) public view returns (string memory) {
         return Base64.encode(bytes(
             string(
                 abi.encodePacked(
@@ -29,7 +30,7 @@ contract TrySVGGenerator {
                     _getSVGDefs(),
                     '<rect width="90" height="60" fill="url(#base-bg)" rx="6" />',
                     '<rect width="83" height="53" x="3.5" y="3.5" rx="5" stroke-width="0.5" stroke="white" />',
-                    _getMainText(),
+                    _getMainText(_tokenId),
                     _getCircles(),
                     _getBorderTexts(),
                     '</svg>'
@@ -51,10 +52,13 @@ contract TrySVGGenerator {
         );
     }
 
-    function _getMainText() private view returns (bytes memory) {
+    function _getMainText(uint256 _tokenId) private view returns (bytes memory) {
+        string memory questId = _tokenId.toString();
+        string memory title = string(abi.encodePacked("Crypto Tours # ", questId));
+
         return abi.encodePacked(
             '<text text-anchor="middle" x="45" y="20" fill="white" font-size="6" font-weight="bold">',
-                "Crypto Tours #1",
+            title,
             '</text>'
         );
     }

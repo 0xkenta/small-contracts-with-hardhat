@@ -10,7 +10,7 @@ describe("TrySVGGenerator", function () {
     generator.deployed()
   })
   it("should return URI", async () =>{
-    const result = await generator.constructTokenURI()
+    const result = await generator.constructTokenURI(7)
     console.log(result)
   })
 });
